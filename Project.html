@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Smart Village Information System</h1>
+
+<input type="text" id="village" placeholder="Village Name">
+<br><br>
+
+<input type="text"  id="gramPradhan"  placeholder="Pradhan Name">
+<br></br>
+
+<input type="text"  id="pradhanPicture" placeholder="Pradhan Image URL">
+<br></br>
+
+<input type="number" id="pradhanNumber" placeholder="Number of Pradhan">
+<br></br>
+
+<input type="number" id="population" placeholder="Population">
+<br><br>
+
+<input type="number" id="schools" placeholder="Number of Schools">
+<br><br>
+
+<input type="number" id="hospitals" placeholder="Number of Hospitals">
+<br><br>
+
+<input type="number" id="voters" placeholder="Number of Voters">
+<br><br>
+
+<input type="text" id="schoolImage" placeholder="School Image URL">
+<br><br>
+
+<input type="text" id="hospitalImage" placeholder="Hospital Image URL">
+<br><br>
+
+<button onclick="addVillage()">
+    Add Village
+</button>
+
+<hr>
+
+<div id="result"></div>
+
+<script>
+
+async function addVillage()
+{
+    let village = document.getElementById("village").value;
+    let gramPradhan = document.getElementById("gramPradhan").value;
+    let pradhanPicture = document.getElementById("pradhanPicture").value;
+    let pradhanNumber = document.getElementById("pradhanNumber").value;
+    let population = document.getElementById("population").value;
+    let schools = document.getElementById("schools").value;
+    let hospitals = document.getElementById("hospitals").value;
+    let voters = document.getElementById("voters").value;
+
+    let schoolImage =
+        document.getElementById("schoolImage").value;
+
+    let hospitalImage =
+        document.getElementById("hospitalImage").value;
+
+    let response = await fetch(
+        "https://jsonplaceholder.typicode.com/users",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                village,
+                gramPradhan,
+                pradhanPicture,
+                pradhanNumber,
+                population,
+                schools,
+                hospitals,
+                voters
+            })
+        }
+    );
+
+    let data = await response.json();
+
+    document.getElementById("result").innerHTML = `
+    <h2 style="color:green;">
+        Village Added Successfully
+    </h2>
+
+    <p><b>Village:</b> ${village}</p>
+
+    <p><b>Gram Pradhan:</b> ${gramPradhan}</p>
+     
+    <img src="${pradhanPicture}"
+    width="200">
+    <br><br>
+
+    <p><b>Pardhan Number:</b> ${pradhanNumber}</p>
+
+    <p><b>Population:</b> ${population}</p>
+
+    <p><b>Schools:</b> ${schools}</p>
+
+    <p><b>Hospitals:</b> ${hospitals}</p>
+
+    <p><b>Voters:</b> ${voters}</p>
+
+    <img src="${schoolImage}"
+         width="200">
+
+    <br><br>
+
+    <img src="${hospitalImage}"
+         width="200">
+
+    <br><br>
+
+    <button onclick="updateVillage()">
+        Update
+    </button>
+
+    <button onclick="deleteVillage()">
+        Delete
+    </button>
+    `;
+}
+
+async function updateVillage()
+{
+    await fetch(
+        "https://jsonplaceholder.typicode.com/users/1",
+        {
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                village: "Updated Village"
+            })
+        }
+    );
+
+    alert("Village Updated Successfully");
+}
+
+async function deleteVillage()
+{
+    await fetch(
+        "https://jsonplaceholder.typicode.com/users/1",
+        {
+            method: "DELETE"
+        }
+    );
+
+    document.getElementById("result").innerHTML = "";
+
+    alert("Village Deleted Successfully");
+}
+
+</script>
+
+</body>
+</html>
